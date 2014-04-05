@@ -57,8 +57,8 @@
     <form id='api_selector'>
       <% unless GrapeSwaggerRails.options.hide_base_url %><div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div><% end %>
       <% if GrapeSwaggerRails.options.api_key_name %><div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div><% end %>
-      <% if !GrapeSwaggerRails.options.hide_base_url && GrapeSwaggerRails.options.api_key_name %>
-        <div class='input'><a id="explore" href="#">Explore</a></div>
+      <% if !GrapeSwaggerRails.options.hide_base_url || GrapeSwaggerRails.options.api_key_name %>
+        <div class='input'><a id="explore" href="#">Go</a></div>
       <% end %>
     </form>
   </div>
