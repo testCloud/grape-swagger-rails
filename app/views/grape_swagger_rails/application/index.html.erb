@@ -102,15 +102,15 @@
   </div>
 </div>
 
-<% if GrapeSwaggerRails.options.app_description %>
-<div id="app_description">
-  <%= GrapeSwaggerRails.options.app_description.html_safe %>
-</div>
-<% end %>
-
 <div id="message-bar" class="swagger-ui-wrap">
   &nbsp;
 </div>
+
+<% if GrapeSwaggerRails.options.app_description %>
+<div id="app_description" class="swagger-ui-wrap">
+  <%= GrapeSwaggerRails.options.app_description.html_safe %>
+</div>
+<% end %>
 
 <div id="swagger-ui-container" class="swagger-ui-wrap">
 
