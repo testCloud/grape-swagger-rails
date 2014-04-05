@@ -55,12 +55,20 @@
     <a id="logo" href="<%= GrapeSwaggerRails.options.app_url %>"><%= GrapeSwaggerRails.options.app_name %></a>
 
     <form id='api_selector'>
-      <div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div>
-      <div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div>
-      <div class='input'><a id="explore" href="#">Explore</a></div>
+      <% unless GrapeSwaggerRails.options.hide_base_url %><div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div><% end %>
+      <% if GrapeSwaggerRails.options.api_key_name %><div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div><% end %>
+      <% if !GrapeSwaggerRails.options.hide_base_url && GrapeSwaggerRails.options.api_key_name %>
+        <div class='input'><a id="explore" href="#">Explore</a></div>
+      <% end %>
     </form>
   </div>
 </div>
+
+<% if GrapeSwaggerRails.options.app_description %>
+<div id="app_description">
+  <%= GrapeSwaggerRails.options.app_description.html_safe %>
+</div>
+<% end %>
 
 <div id="message-bar" class="swagger-ui-wrap">
   &nbsp;

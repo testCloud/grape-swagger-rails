@@ -1,7 +1,7 @@
 require "grape-swagger-rails/engine"
 
 module GrapeSwaggerRails
-  class Options < Struct.new(:url, :api_key_name, :api_key_type, :api_auth, :headers, :app_name, :app_url, :authentication_proc)
+  class Options < Struct.new(:url, :api_key_name, :api_key_type, :api_auth, :headers, :app_name, :app_url, :app_description, :authentication_proc, :hide_base_url)
     def authenticate_with(&block)
       self.authentication_proc = block
     end
@@ -14,6 +14,8 @@ module GrapeSwaggerRails
     url:                  '/swagger_doc.json',
     app_name:             'Swagger',
     app_url:              'http://swagger.wordnik.com',
+    app_description:      nil,
+    hide_base_url:        false,
     
     headers:              {},
     
