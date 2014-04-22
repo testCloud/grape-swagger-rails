@@ -1165,6 +1165,14 @@
 .swagger-section .swagger-ui-wrap .operation-status td.markdown > p:last-child {
   padding-bottom: 0;
 }
+#header {
+  <% if GrapeSwaggerRails.options.styles.has_key?(:header) &&  GrapeSwaggerRails.options.styles[:header][:backgroundColor] %>
+  background-color: <%= GrapeSwaggerRails.options.styles[:header][:backgroundColor] %>;
+  <% else %>
+  background-color: '#89bf04';
+  <% end %>
+  padding: 14px;
+}
 .swagger-section .title {
   font-style: bold;
 }
