@@ -17,15 +17,12 @@
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){
         if('console' in window) {
-          console.log("Loaded SwaggerUI")
-          console.log(swaggerApi);
           console.log(swaggerUi);
         }
         $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
       },
       onFailure: function(data) {
         if('console' in window) {
-          console.log("Unable to Load SwaggerUI");
           console.log(data);
         }
       },
@@ -44,6 +41,22 @@
         window.authorizations.add("key", null);
       }
     })
+
+    <% if GrapeSwaggerRails.options.api_app_id_name %>
+      $('#input_apiAppId').change(function() {
+        var key = $('#input_apiAppId')[0].value;
+
+        if(key && key.trim() != "") {
+          if (options.api_auth == 'basic') {
+            key = "Basic " + Base64.encode(key);
+          }
+          window.authorizations.add("keyDos", new ApiKeyAuthorization(options.api_app_id_name, key, options.api_app_id_type));
+        } else {
+          window.authorizations.add("key", null);
+        }
+      })
+    <% end %>
+
     window.swaggerUi.load();
   });
   </script>
@@ -56,10 +69,20 @@
 
     <form id='api_selector'>
       <% unless GrapeSwaggerRails.options.hide_base_url %><div class='input'><input placeholder="http://example.com/api" id="input_baseUrl" name="baseUrl" type="text"/></div><% else %><input id="input_baseUrl" name="baseUrl" type="hidden"/><% end %>
+
+      <% if GrapeSwaggerRails.options.api_app_id_name %>
+        <div class='input'>
+          <input placeholder="app_id" id="input_apiAppId" name="apiAppId" type="text"/>
+        </div>
+      <% end %>
+
       <% if GrapeSwaggerRails.options.api_key_name %><div class='input'><input placeholder="api_key" id="input_apiKey" name="apiKey" type="text"/></div><% end %>
+      
       <% if !GrapeSwaggerRails.options.hide_base_url || GrapeSwaggerRails.options.api_key_name %>
         <div class='input'><a id="explore" href="#">Go</a></div>
       <% end %>
+
+      
     </form>
   </div>
 </div>

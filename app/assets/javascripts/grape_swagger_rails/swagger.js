@@ -41,6 +41,9 @@
       if (options.url != null) {
         this.url = options.url;
       }
+      if ( options.apiAppId != null ) {
+        this.apiAppId = options.apiAppId;
+      }
       if (options.success != null) {
         this.success = options.success;
       }
@@ -55,13 +58,17 @@
       var e, obj,
         _this = this;
       this.progress('fetching resource list: ' + this.url);
+      var headers = {
+        accept: "application/json"
+      }
+      if ( this.apiAppId ) {
+        headers[this.options.api_app_id_name] = this.apiAppId;
+      }
       obj = {
         useJQuery: this.useJQuery,
         url: this.url,
         method: "get",
-        headers: {
-          accept: "application/json"
-        },
+        headers: headers,
         on: {
           error: function(response) {
             if (_this.url.substring(0, 4) !== 'http') {
