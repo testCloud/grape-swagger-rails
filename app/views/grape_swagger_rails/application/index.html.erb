@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-swagger-options="<%= GrapeSwaggerRails.options.to_json %>">
+<html data-swagger-options="<%= GrapeSwaggerRails.options.to_h.to_json %>">
 <head>
   <title><%= GrapeSwaggerRails.options.app_name || 'Swagger UI' %></title>
   <link href='//fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'/>
@@ -8,21 +8,23 @@
   <script type="text/javascript">
 	$(function () {
 	  var options = $("html").data('swagger-options');
-	  
+
     window.swaggerUi = new SwaggerUi({
       url: options.app_url + options.url,
       dom_id:"swagger-ui-container",
       supportHeaderParams: true,
-      headers: options.headers,
       supportedSubmitMethods: ['get', 'post', 'put', 'delete'],
       onComplete: function(swaggerApi, swaggerUi){
         if('console' in window) {
+          console.log("Loaded SwaggerUI")
+          console.log(swaggerApi);
           console.log(swaggerUi);
         }
         $('pre code').each(function(i, e) {hljs.highlightBlock(e)});
       },
       onFailure: function(data) {
         if('console' in window) {
+          console.log("Unable to Load SwaggerUI");
           console.log(data);
         }
       },
@@ -31,10 +33,12 @@
 
     $('#input_apiKey').change(function() {
       var key = $('#input_apiKey')[0].value;
-      
+
       if(key && key.trim() != "") {
         if (options.api_auth == 'basic') {
           key = "Basic " + Base64.encode(key);
+        } else if (options.api_auth == 'bearer') {
+          key = "Bearer " + key
         }
         window.authorizations.add("key", new ApiKeyAuthorization(options.api_key_name, key, options.api_key_type));
       } else {
@@ -57,12 +61,18 @@
       })
     <% end %>
 
+    });
+
+    <% GrapeSwaggerRails.options.headers.each_pair do |key, value| %>
+      <%=raw "window.authorizations.add('key', new ApiKeyAuthorization('#{CGI.escapeHTML(key)}', '#{CGI.escapeHTML(value)}', 'header'));" %>
+    <% end %>
+
     window.swaggerUi.load();
   });
   </script>
 </head>
 
-<body>
+<body class="swagger-section">
 <div id='header'>
   <div class="swagger-ui-wrap">
     <a id="logo" href="<%= GrapeSwaggerRails.options.app_url %>"><%= GrapeSwaggerRails.options.app_name %></a>
@@ -90,12 +100,6 @@
 <div id="message-bar" class="swagger-ui-wrap">
   &nbsp;
 </div>
-
-<% if GrapeSwaggerRails.options.app_description %>
-<div id="app_description" class="swagger-ui-wrap">
-  <%= GrapeSwaggerRails.options.app_description.html_safe %>
-</div>
-<% end %>
 
 <div id="swagger-ui-container" class="swagger-ui-wrap">
 
