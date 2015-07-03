@@ -73,8 +73,6 @@
       })
     <% end %>
 
-    });
-
     <% GrapeSwaggerRails.options.headers.each_pair do |key, value| %>
       <%=raw "window.authorizations.add('key', new ApiKeyAuthorization('#{CGI.escapeHTML(key)}', '#{CGI.escapeHTML(value)}', 'header'));" %>
     <% end %>
