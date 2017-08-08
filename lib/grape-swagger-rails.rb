@@ -32,6 +32,9 @@ module GrapeSwaggerRails
     api_key_type:           'query', # 'header'
     api_key_default_value:  '', # Auto populates api_key
 
+    api_app_id_name:      'app_id',  # 'Application ID'
+    api_app_id_type:      'header',
+
     doc_expansion:          'none',
     supported_submit_methods: %w(get post put delete patch),
 

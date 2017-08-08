@@ -56,6 +56,19 @@
       }
     }
 
+    function getApiAppIdAuthorization() {
+      var key = $('#input_apiKey')[0].value;
+
+      if (key && key.trim() != "") {
+        if (options.api_auth == 'basic') {
+          key = "Basic " + Base64.encode(key);
+        } else if (options.api_auth == 'bearer') {
+          key = "Bearer " + key
+        }
+        return new SwaggerClient.ApiKeyAuthorization(options.api_app_id_name, key, options.api_app_id_type);
+      }
+    }
+
     function addApiKeyAuthorization() {
       var apiKeyAuthorization = getApiKeyAuthorization();
       if (apiKeyAuthorization) {
@@ -63,19 +76,16 @@
       }
     }
 
-    <% if GrapeSwaggerRails.options.api_app_id_name %>
-      $('#input_apiAppId').change(function() {
-        var key = $('#input_apiAppId')[0].value;
+    function addApiAppIdAuthorization() {
+      var apiAppIdAuthorization = getApiAppIdAuthorization();
+      if (apiAppIdAuthorization) {
+        window.swaggerUi.api.clientAuthorizations.add("key", apiAppIdAuthorization);
+      }
+    }
 
-        if(key && key.trim() != "") {
-          if (options.api_auth == 'basic') {
-            key = "Basic " + Base64.encode(key);
-          }
-          window.authorizations.add("keyDos", new SwaggerClient.ApiKeyAuthorization(options.api_app_id_name, key, options.api_app_id_type));
-        } else {
-          window.authorizations.add("key", null);
-        }
-      })
+    $('#input_apiKey').change(addApiKeyAuthorization);
+    <% if GrapeSwaggerRails.options.api_app_id_name %>
+      $('#input_apiAppId').change(addApiAppIdAuthorization);
     <% end %>
 
     window.swaggerUi.load();
